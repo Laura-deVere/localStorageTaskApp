@@ -17,8 +17,19 @@ body {
     align-items: center;
 }
 
-.clear-list {
+.header {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-icon i {
+    font-size: 30px;
+    color: #73a7ff;
+}
+
+.clear-list {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -39,7 +50,7 @@ body {
 }
 
 .list-item {
-    height: 20px;
+    min-height: 20px;
     font-size: 16px;
     max-width: 100%;
     padding: 10px 5px;
@@ -49,8 +60,24 @@ body {
     color: #73a7ff
 }
 
+.list-item > p {
+    padding: 0 10px;
+}
+
 .list-item > input {
     width: 20px;
+}
+
+.list-item i {
+    color: black;
+    background-color: #fff;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 form {

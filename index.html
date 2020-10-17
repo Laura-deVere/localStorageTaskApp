@@ -9,15 +9,20 @@
 </head>
 <body>
     <div class="app">
-        <div class="clear-list">
-            <button id="clear-list">
-                <i class="lni lni-plus rotated"></i>
-            </button><span>Clear List</span>
+        <div class="header">
+            <div class="list-icon">
+                <i class="lni lni-list"></i>
+            </div>
+            <div class="clear-list">
+                <button id="clear-list">
+                    <i class="lni lni-plus rotated"></i>
+                </button><span>Clear List</span>
+            </div>
         </div>
         <ul class="list">
         </ul>
         <form class="input-form">
-            <input placeholder="New Task..." class="form-input"/>
+            <input placeholder="New Task..." class="form-input"  maxlength="150"/>
             <button type="submit">
                 <i class="lni lni-plus"></i>
             </button>
@@ -39,21 +44,26 @@
         }
 
         function appendTask(task,index) {
-            console.log(task)
-
             const list = document.querySelector('.list'); 
             const listItem = document.createElement('li');
             const text = document.createElement('p');
             const input = document.createElement('input');
+            const icon = document.createElement('i');
 
             listItem.setAttribute('id', index);
             listItem.classList.add('list-item');
             listItem.style.backgroundColor = randomColor();
 
             text.textContent = task.value;
+
             input.type = 'checkbox';
             input.checked = task.completed;
+            input.addEventListener('click', (e) => updateTask(index))
 
+            icon.classList.add('lni', 'lni-plus', 'rotated');
+            icon.addEventListener('click', (e) => deleteTask(index));
+
+            listItem.appendChild(icon);
             listItem.appendChild(text);
             listItem.appendChild(input);
 
@@ -67,11 +77,9 @@
 
         function getItems() {
             let tasks = JSON.parse(localStorage.getItem('tasks'));
-            console.log(tasks);
             if(!tasks) {
                 tasks = [];
             }
-            console.log(tasks);
             return tasks;
         }
 
@@ -86,11 +94,35 @@
             clearForm('.input-form');
         }
 
+        function updateTask(taskID) {
+            const storedTasks = getItems();
+            const task = storedTasks[taskID];
+            task.completed = !task.completed; 
+            localStorage.setItem("tasks", JSON.stringify(storedTasks));
+            return task;
+        }
+
         function deleteTask(taskID) {
-            // localStorage.removeItem('myCat');
+            const storedTasks = getItems();
+            const removed = storedTasks.splice(taskID,1);
+            localStorage.setItem("tasks", JSON.stringify(storedTasks));
+            updateIdAndRemove(taskID);
+            return removed;
         }
 
         // helpers
+        function updateIdAndRemove(taskID) {
+            const list = document.querySelectorAll('.list-item');
+            let count = 0;
+            list.forEach((item, index) => {
+                if(index === taskID) {
+                    item.remove();
+                } else {
+                    item.setAttribute('id', count);
+                    count++;
+                }
+            });
+        }
 
         function deleteList() {
             localStorage.clear();
