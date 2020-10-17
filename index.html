@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <div class="clear-list">
+            <button id="clear-list">
+                <i class="lni lni-plus rotated"></i>
+            </button><span>Clear List</span>
+        </div>
+        <ul class="list">
+        </ul>
+        <form class="input-form">
+            <input placeholder="New Task..." class="form-input"/>
+            <button type="submit">
+                <i class="lni lni-plus"></i>
+            </button>
+        </form>
+    </div>
+    <script>
+        
+        document.querySelector('form').addEventListener('submit', addTask);
+        document.getElementById('clear-list').addEventListener('click', deleteList);
+        window.addEventListener('load', renderList);
+
+        function renderList() {
+            const storedTasks = getItems();
+            const list = document.querySelector('.list');
+
+            storedTasks.map((task, index) => {
+                appendTask(task, index);
+            })
+        }
+
+        function appendTask(task,index) {
+            console.log(task)
+
+            const list = document.querySelector('.list'); 
+            const listItem = document.createElement('li');
+            const text = document.createElement('p');
+            const input = document.createElement('input');
+
+            listItem.setAttribute('id', index);
+            listItem.classList.add('list-item');
+            listItem.style.backgroundColor = randomColor();
+
+            text.textContent = task.value;
+            input.type = 'checkbox';
+            input.checked = task.completed;
+
+            listItem.appendChild(text);
+            listItem.appendChild(input);
+
+            list.appendChild(listItem);
+        }
+
+        function Task(value) {
+            this.value = value;
+            this.completed = false;
+        }
+
+        function getItems() {
+            let tasks = JSON.parse(localStorage.getItem('tasks'));
+            console.log(tasks);
+            if(!tasks) {
+                tasks = [];
+            }
+            console.log(tasks);
+            return tasks;
+        }
+
+        function addTask(e) {
+            e.preventDefault();
+            const storedTasks = getItems();
+            const input = document.querySelector('.form-input').value;
+            const task = new Task(input);
+            storedTasks.push(task);
+            localStorage.setItem("tasks", JSON.stringify(storedTasks));
+            appendTask(task, storedTasks.length-1);
+            clearForm('.input-form');
+        }
+
+        function deleteTask(taskID) {
+            // localStorage.removeItem('myCat');
+        }
+
+        // helpers
+
+        function deleteList() {
+            localStorage.clear();
+            const list = document.querySelectorAll('.list-item');
+
+            list.forEach(item => {
+                item.remove();
+            });
+        }
+
+        function clearForm(form) {
+            document.querySelector(form).reset();
+        }
+
+        function randomNum(max) {
+            return Math.round(Math.random() * (max-0) + 0);
+        }
+
+        function randomColor() {
+            const colors = ['#bff0ff', '#bfd7ff', '#ffbfd9', '#ffccbf', '#f5ffbf'];
+            return colors[randomNum(colors.length)];
+        }
+    </script>
+</body>
+</html>
