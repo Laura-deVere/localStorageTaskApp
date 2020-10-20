@@ -57,11 +57,12 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #73a7ff
+    color: black;
 }
 
 .list-item > p {
     padding: 0 10px;
+    text-align: left;
 }
 
 .list-item > input {

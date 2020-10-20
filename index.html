@@ -48,6 +48,7 @@
             const listItem = document.createElement('li');
             const text = document.createElement('p');
             const input = document.createElement('input');
+            const button = document.createElement('button');
             const icon = document.createElement('i');
 
             listItem.setAttribute('id', index);
@@ -61,9 +62,10 @@
             input.addEventListener('click', (e) => updateTask(index))
 
             icon.classList.add('lni', 'lni-plus', 'rotated');
-            icon.addEventListener('click', (e) => deleteTask(index));
+            button.addEventListener('click', (e) => deleteTask(index));
 
-            listItem.appendChild(icon);
+            listItem.appendChild(button);
+            button.appendChild(icon);
             listItem.appendChild(text);
             listItem.appendChild(input);
 
